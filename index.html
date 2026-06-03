@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DapurKos – Catering Rumahan Anak Kos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #fdf6ec;
+      --warm-white: #fffaf4;
+      --orange: #e8631a;
+      --orange-light: #f5894e;
+      --orange-pale: #fde8d8;
+      --brown: #291a10;
+      --brown-mid: #7a4420;
+      --green: #2d6a4f;
+      --green-light: #52b788;
+      --yellow: #fff159;
+      --text: #2c1a0e;
+      --text-muted: #8b6347;
+      --shadow: 0 8px 32px rgba(59,31,14,0.10);
+      --shadow-lg: 0 16px 48px rgba(59,31,14,0.15);
+      --radius: 20px;
+      --radius-sm: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(253,246,236,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1.5px solid rgba(232,99,26,0.12);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 68px;
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(59,31,14,0.10); }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem; font-weight: 900;
+      color: var(--orange);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--brown); }
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none; color: var(--brown-mid);
+      font-weight: 500; font-size: 0.92rem;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 2px; background: var(--orange);
+      transition: width 0.25s;
+    }
+    .nav-links a:hover { color: var(--orange); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      background: var(--orange); color: #fff !important;
+      padding: 8px 20px; border-radius: 50px;
+      font-weight: 600 !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--brown) !important; color: #fff !important; }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2.5px;
+      background: var(--brown); border-radius: 2px; transition: 0.3s;
+    }
+    .mobile-menu {
+      display: none; position: fixed; top: 68px; left: 0; right: 0;
+      background: var(--warm-white); z-index: 99;
+      border-bottom: 1px solid var(--orange-pale);
+      flex-direction: column; padding: 1.2rem 5vw;
+      gap: 1rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      text-decoration: none; color: var(--brown-mid);
+      font-weight: 500; font-size: 1rem; padding: 0.4rem 0;
+    }
+
+    /* ── HERO ── */
+    #beranda {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 68px 5vw 0;
+      gap: 3rem;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-blob {
+      position: absolute; right: -10vw; top: -5vh;
+      width: 55vw; height: 90vh;
+      background: radial-gradient(ellipse at 60% 40%, #fde8d8 0%, #fdf6ec 70%);
+      border-radius: 50% 30% 60% 20%;
+      z-index: 0;
+    }
+    .hero-text { position: relative; z-index: 1; animation: fadeUp 0.8s ease both; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--orange-pale); color: var(--orange);
+      font-size: 0.82rem; font-weight: 600;
+      padding: 6px 14px; border-radius: 50px;
+      margin-bottom: 1.4rem;
+      border: 1px solid rgba(232,99,26,0.2);
+    }
+    .hero-badge::before { content: '🍱'; font-size: 1rem; }
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 900; line-height: 1.1;
+      color: var(--brown); margin-bottom: 1.2rem;
+    }
+    h1 em { color: var(--orange); font-style: italic; }
+    .hero-sub {
+      font-size: 1.05rem; color: var(--text-muted);
+      line-height: 1.7; max-width: 420px; margin-bottom: 2rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--orange); color: #fff;
+      padding: 14px 28px; border-radius: 50px;
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 6px 24px rgba(232,99,26,0.3);
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(232,99,26,0.4); background: #d0571a; }
+    .btn-outline {
+      border: 2px solid var(--brown); color: var(--brown);
+      padding: 12px 24px; border-radius: 50px;
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { background: var(--brown); color: #fff; }
+    .hero-stats {
+      display: flex; gap: 2rem; margin-top: 2.5rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 900; color: var(--orange);
+    }
+    .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+    .hero-img {
+      position: relative; z-index: 1;
+      animation: fadeUp 0.8s 0.2s ease both;
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    }
+    .hero-food-card {
+      background: #fff; border-radius: 24px;
+      padding: 1.4rem; width: 100%; max-width: 340px;
+      box-shadow: var(--shadow-lg);
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+    .food-img-placeholder {
+      width: 100%; height: 200px;
+      background: linear-gradient(135deg, #fde8d8, #f9c74f40);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+    }
+    .food-info { display: flex; justify-content: space-between; align-items: center; }
+    .food-name { font-weight: 700; font-size: 1.05rem; color: var(--brown); }
+    .food-price {
+      background: var(--orange); color: #fff;
+      padding: 4px 12px; border-radius: 50px;
+      font-weight: 700; font-size: 0.88rem;
+    }
+    .food-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag {
+      background: var(--orange-pale); color: var(--orange);
+      font-size: 0.75rem; font-weight: 600;
+      padding: 3px 10px; border-radius: 50px;
+    }
+    .floating-pill {
+      background: var(--green); color: #fff;
+      padding: 10px 18px; border-radius: 50px;
+      font-size: 0.82rem; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 16px rgba(45,106,79,0.3);
+      align-self: flex-start;
+    }
+
+    /* ── SECTIONS COMMON ── */
+    section { padding: 90px 5vw; }
+    .section-label {
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+      color: var(--orange); text-transform: uppercase; margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 900; color: var(--brown); line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .section-sub { color: var(--text-muted); max-width: 500px; line-height: 1.7; }
+
+    /* ── MENU ── */
+    #menu { background: var(--warm-white); }
+    .menu-header { text-align: center; margin-bottom: 3rem; }
+    .menu-filter {
+      display: flex; gap: 0.6rem; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 2.5rem;
+    }
+    .filter-btn {
+      padding: 8px 18px; border-radius: 50px;
+      border: 1.5px solid #f1d7d7; background: #fff;
+      cursor: pointer; font-weight: 600; font-size: 0.85rem;
+      color: var(--text-muted); transition: 0.2s; font-family: 'DM Sans', sans-serif;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--orange); color: #fff; border-color: var(--orange);
+    }
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.4rem;
+    }
+    .menu-card {
+      background: #fff; border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--shadow);
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+    .menu-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .menu-img {
+      height: 180px; overflow: hidden; position: relative;
+    }
+    .menu-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .menu-card:hover .menu-img img { transform: scale(1.07); }
+    .menu-img-fallback {
+      height: 180px; background: linear-gradient(135deg, var(--orange-pale), #fff9f0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+    }
+    .menu-body { padding: 1.2rem; }
+    .menu-body h3 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.1rem; color: var(--brown); margin-bottom: 0.3rem; }
+    .menu-body p { font-size: 0.83rem; color: var(--text-muted); margin-bottom: 0.8rem; line-height: 1.5; }
+    .menu-footer { display: flex; justify-content: space-between; align-items: center; }
+    .menu-price { font-weight: 700; color: var(--orange); font-size: 1rem; }
+    .menu-badge { background: var(--green); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 50px; }
+    .menu-badge.sold { background: var(--yellow); color: var(--brown); }
+
+    /* ── PAKET ── */
+    #paket {
+      background: linear-gradient(160deg, #3b1f0e 0%, #7a4420 100%);
+      position: relative; overflow: hidden;
+    }
+    #paket::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .paket-header { text-align: center; margin-bottom: 3.5rem; position: relative; }
+    .paket-header .section-label { color: var(--yellow); }
+    .paket-header .section-title { color: #fff; }
+    .paket-header .section-sub { color: rgba(255,255,255,0.6); margin: 0 auto; }
+    .paket-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem; position: relative;
+    }
+    .paket-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius); padding: 2rem;
+      transition: transform 0.25s, background 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .paket-card.featured {
+      background: var(--orange);
+      border-color: var(--orange-light);
+      transform: scale(1.04);
+    }
+    .paket-card:hover { transform: translateY(-6px); }
+    .paket-card.featured:hover { transform: scale(1.04) translateY(-6px); }
+    .paket-ribbon {
+      position: absolute; top: 16px; right: -20px;
+      background: var(--yellow); color: var(--brown);
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5px;
+      padding: 4px 28px; transform: rotate(35deg);
+      text-transform: uppercase;
+    }
+    .paket-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .paket-name {
+      font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 900;
+      color: #fff; margin-bottom: 0.3rem;
+    }
+    .paket-tagline { font-size: 0.83rem; color: rgba(255,255,255,0.65); margin-bottom: 1.2rem; }
+    .paket-price {
+      font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 900;
+      color: var(--yellow); margin-bottom: 1.4rem;
+    }
+    .paket-price span { font-size: 0.9rem; font-weight: 400; color: rgba(255,255,255,0.55); }
+    .paket-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.8rem; }
+    .paket-list li { font-size: 0.88rem; color: rgba(255,255,255,0.85); display: flex; align-items: center; gap: 8px; }
+    .paket-list li::before { content: '✓'; color: var(--green-light); font-weight: 700; }
+    .paket-btn {
+      width: 100%; text-align: center;
+      padding: 12px; border-radius: 50px;
+      background: rgba(255,255,255,0.15);
+      color: #fff; font-weight: 700; font-size: 0.9rem;
+      text-decoration: none; display: block;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      transition: background 0.2s;
+    }
+    .paket-card.featured .paket-btn { background: #fff; color: var(--orange); border-color: #fff; }
+    .paket-btn:hover { background: rgba(255,255,255,0.25); }
+    .paket-card.featured .paket-btn:hover { background: #ffe; }
+
+    /* ── CARA PESAN ── */
+    #cara-pesan { background: var(--cream); }
+    .cara-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .cara-steps { display: flex; flex-direction: column; gap: 1.6rem; }
+    .step-item {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding: 1.2rem; border-radius: var(--radius-sm);
+      background: transparent;
+      transition: background 0.2s;
+    }
+    .step-item:hover { background: var(--orange-pale); }
+    .step-num {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--orange); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif; font-weight: 900; font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .step-content h4 { font-weight: 700; color: var(--brown); margin-bottom: 0.3rem; font-size: 1rem; }
+    .step-content p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+    .cara-visual {
+      background: var(--orange-pale); border-radius: 28px;
+      padding: 2.5rem; display: flex; flex-direction: column; gap: 1rem;
+    }
+    .chat-bubble {
+      max-width: 80%; padding: 12px 16px; border-radius: 18px;
+      font-size: 0.88rem; line-height: 1.5;
+    }
+    .chat-bubble.left {
+      background: #fff; color: var(--text);
+      border-radius: 18px 18px 18px 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .chat-bubble.right {
+      background: var(--green); color: #fff;
+      border-radius: 18px 18px 4px 18px;
+      align-self: flex-end;
+    }
+    .chat-label { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 4px; }
+    .chat-time { font-size: 0.68rem; color: rgba(255,255,255,0.6); margin-top: 4px; text-align: right; }
+
+    /* ── TESTIMONI ── */
+    #testimoni { background: var(--warm-white); }
+    .testi-header { text-align: center; margin-bottom: 3rem; }
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.4rem;
+    }
+    .testi-card {
+      background: #fff; border-radius: var(--radius); padding: 1.8rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s;
+    }
+    .testi-card:hover { transform: translateY(-4px); }
+    .testi-stars { color: var(--yellow); font-size: 1rem; margin-bottom: 0.8rem; letter-spacing: 2px; }
+    .testi-text {
+      font-size: 0.92rem; color: var(--text); line-height: 1.7;
+      font-style: italic; margin-bottom: 1.2rem;
+    }
+    .testi-author { display: flex; align-items: center; gap: 0.8rem; }
+    .testi-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--orange-pale); display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .testi-name { font-weight: 700; font-size: 0.9rem; color: var(--brown); }
+    .testi-info { font-size: 0.78rem; color: var(--text-muted); }
+    .testi-highlight {
+      background: linear-gradient(135deg, var(--orange) 0%, #f5894e 100%);
+      color: #fff; border-radius: var(--radius); padding: 2rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      min-height: 220px;
+    }
+    .testi-highlight .testi-stars { color: var(--yellow); }
+    .testi-highlight .testi-text { color: rgba(255,255,255,0.9); }
+    .testi-highlight .testi-name { color: #fff; }
+    .testi-highlight .testi-info { color: rgba(255,255,255,0.65); }
+
+    /* ── CTA / ORDER ── */
+    #pesan {
+      background: var(--cream);
+      text-align: center; padding: 80px 5vw;
+    }
+    .cta-box {
+      background: var(--brown); border-radius: 32px;
+      padding: 4rem 2rem; position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: '🍱'; font-size: 12rem; opacity: 0.05;
+      position: absolute; right: 2rem; top: 50%; transform: translateY(-50%);
+    }
+    .cta-box .section-label { color: var(--yellow); }
+    .cta-box .section-title { color: #fff; margin-bottom: 1rem; }
+    .cta-box p { color: rgba(255,255,255,0.65); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .wa-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #25D366; color: #fff;
+      padding: 16px 36px; border-radius: 50px;
+      font-weight: 700; font-size: 1.05rem;
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(37,211,102,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .wa-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(37,211,102,0.5); }
+    .wa-icon {
+      width: 28px; height: 28px;
+      background: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .cta-note { margin-top: 1.2rem; color: rgba(255,255,255,0.4); font-size: 0.82rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #2c1a0e; color: rgba(255,255,255,0.6);
+      padding: 3rem 5vw 2rem;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem; }
+    .footer-brand .nav-logo { font-size: 1.4rem; display: inline-block; margin-bottom: 0.8rem; color: var(--orange); }
+    .footer-brand p { font-size: 0.85rem; line-height: 1.7; }
+    .footer-col h5 { color: #fff; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-col ul li a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--orange); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; }
+    .footer-bottom a { color: var(--orange); text-decoration: none; }
+
+    /* ── FLOATING WA ── */
+    .wa-float {
+      position: fixed; bottom: 24px; right: 24px; z-index: 200;
+      width: 58px; height: 58px; border-radius: 50%;
+      background: #25D366; display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; box-shadow: 0 6px 24px rgba(37,211,102,0.5);
+      text-decoration: none; cursor: pointer;
+      animation: pulse-wa 2.5s infinite;
+      transition: transform 0.2s;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+    @keyframes pulse-wa {
+      0%, 100% { box-shadow: 0 6px 24px rgba(37,211,102,0.5); }
+      50% { box-shadow: 0 6px 40px rgba(37,211,102,0.8); }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── KOMENTAR TESTIMONI ── */
+    .komentar-form-box {
+      background: #fff; border-radius: var(--radius); padding: 2rem;
+      box-shadow: var(--shadow); margin-top: 2.5rem;
+    }
+    .komentar-form-box h3 { font-family:'Fraunces',serif; font-size:1.3rem; color:var(--brown); margin-bottom:1.2rem; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
+    .form-group { display:flex; flex-direction:column; gap:0.4rem; }
+    .form-group label { font-size:0.82rem; font-weight:600; color:var(--brown-mid); }
+    .form-group input, .form-group textarea, .form-group select {
+      border:1.5px solid #f1d7d7; border-radius:var(--radius-sm);
+      padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem;
+      color:var(--text); background:#fffaf4; outline:none; transition:border 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--orange); }
+    .form-group textarea { resize:vertical; min-height:90px; }
+    .star-select { display:flex; gap:6px; margin-top:4px; }
+    .star-select span { font-size:1.4rem; cursor:pointer; opacity:0.35; transition:opacity 0.15s,transform 0.15s; }
+    .star-select span.aktif, .star-select span:hover { opacity:1; transform:scale(1.2); }
+    .btn-kirim {
+      background:var(--orange); color:#fff; border:none; cursor:pointer;
+      padding:12px 28px; border-radius:50px; font-weight:700; font-size:0.95rem;
+      font-family:'DM Sans',sans-serif; margin-top:1rem;
+      transition:background 0.2s,transform 0.2s;
+    }
+    .btn-kirim:hover { background:#d0571a; transform:translateY(-2px); }
+    .komentar-list { display:flex; flex-direction:column; gap:1rem; margin-top:1.5rem; }
+    .komentar-item {
+      background:var(--orange-pale); border-radius:var(--radius-sm);
+      padding:1rem 1.2rem; border-left:4px solid var(--orange);
+    }
+    .komentar-meta { display:flex; justify-content:space-between; margin-bottom:0.4rem; }
+    .komentar-nama { font-weight:700; font-size:0.9rem; color:var(--brown); }
+    .komentar-bintang { color:var(--yellow); font-size:0.85rem; }
+    .komentar-teks { font-size:0.88rem; color:var(--text); line-height:1.6; }
+    .komentar-waktu { font-size:0.75rem; color:var(--text-muted); margin-top:0.3rem; }
+
+    /* ── PETA LOKASI ── */
+    #lokasi { background:var(--cream); }
+    .lokasi-layout { display:grid; grid-template-columns:1fr 1.4fr; gap:3rem; align-items:start; }
+    .lokasi-info { display:flex; flex-direction:column; gap:1.2rem; }
+    .info-item {
+      display:flex; gap:1rem; align-items:flex-start;
+      padding:1rem; background:#fff; border-radius:var(--radius-sm);
+      box-shadow:var(--shadow);
+    }
+    .info-icon { font-size:1.5rem; flex-shrink:0; }
+    .info-item h4 { font-weight:700; color:var(--brown); font-size:0.95rem; margin-bottom:0.2rem; }
+    .info-item p { font-size:0.85rem; color:var(--text-muted); line-height:1.5; }
+    .peta-wrap { border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-lg); }
+    .peta-wrap iframe { width:100%; height:380px; border:none; display:block; }
+
+    /* ── PEMBAYARAN ── */
+    #pembayaran { background:var(--warm-white); }
+    .bayar-header { text-align:center; margin-bottom:3rem; }
+    .bayar-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.4rem; }
+    .bayar-card {
+      background:#fff; border-radius:var(--radius); padding:1.8rem;
+      box-shadow:var(--shadow); text-align:center; cursor:pointer;
+      border:2px solid transparent; transition:all 0.25s;
+    }
+    .bayar-card:hover { border-color:var(--orange); transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+    .bayar-ikon { font-size:2.8rem; margin-bottom:0.8rem; }
+    .bayar-nama { font-family:'Fraunces',serif; font-weight:700; font-size:1.15rem; color:var(--brown); margin-bottom:0.3rem; }
+    .bayar-ket { font-size:0.83rem; color:var(--text-muted); line-height:1.5; margin-bottom:1rem; }
+    .btn-bayar-detail {
+      background:var(--orange-pale); color:var(--orange);
+      border:none; cursor:pointer; padding:8px 20px; border-radius:50px;
+      font-weight:700; font-size:0.85rem; font-family:'DM Sans',sans-serif;
+      transition:background 0.2s;
+    }
+    .btn-bayar-detail:hover { background:var(--orange); color:#fff; }
+    .bayar-info-box {
+      background:linear-gradient(135deg,var(--brown) 0%,var(--brown-mid) 100%);
+      border-radius:var(--radius); padding:2rem; margin-top:2rem; color:#fff; text-align:center;
+    }
+    .bayar-info-box h4 { font-family:'Fraunces',serif; font-size:1.2rem; margin-bottom:0.5rem; }
+    .bayar-info-box p { font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6; }
+
+    /* ── MODAL ── */
+    .modal-bg {
+      display:none; position:fixed; inset:0; z-index:500;
+      background:rgba(44,26,14,0.6); backdrop-filter:blur(6px);
+      align-items:center; justify-content:center; padding:1rem;
+    }
+    .modal-bg.buka { display:flex; }
+    .modal-box {
+      background:#fff; border-radius:var(--radius); padding:2.2rem;
+      max-width:440px; width:100%; position:relative;
+      animation:fadeUp 0.35s ease both;
+    }
+    .modal-tutup {
+      position:absolute; top:1rem; right:1rem; background:none; border:none;
+      font-size:1.4rem; cursor:pointer; color:var(--text-muted);
+    }
+    .modal-box h3 { font-family:'Fraunces',serif; font-size:1.3rem; color:var(--brown); margin-bottom:1.2rem; }
+    .rekening-item {
+      background:var(--orange-pale); border-radius:var(--radius-sm);
+      padding:1rem 1.2rem; margin-bottom:0.8rem; display:flex; justify-content:space-between; align-items:center;
+    }
+    .rek-info { font-size:0.85rem; color:var(--text-muted); }
+    .rek-nomor { font-weight:700; font-size:1rem; color:var(--brown); }
+    .btn-salin {
+      background:var(--orange); color:#fff; border:none; cursor:pointer;
+      padding:6px 14px; border-radius:50px; font-size:0.8rem; font-weight:700;
+      font-family:'DM Sans',sans-serif; transition:background 0.2s;
+    }
+    .btn-salin:hover { background:#d0571a; }
+    .qris-img { width:200px; height:200px; margin:1rem auto; display:block; background:var(--orange-pale); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:5rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 4vw; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      #beranda { grid-template-columns: 1fr; padding-top: 90px; }
+      .hero-img { display: none; }
+      .hero-stats { gap: 1.2rem; }
+      .cara-layout { grid-template-columns: 1fr; }
+      .cara-visual { display: none; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .lokasi-layout { grid-template-columns:1fr; }
+      .form-row { grid-template-columns:1fr; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+    /* ── KERANJANG ── */
+.keranjang-btn {
+  position:fixed; bottom:90px; right:24px; z-index:200;
+  background:var(--orange); color:#fff;
+  width:58px; height:58px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; cursor:pointer; border:none;
+  box-shadow:0 6px 24px rgba(232,99,26,0.4);
+  transition:transform 0.2s;
+}
+.keranjang-btn:hover { transform:scale(1.1); }
+.keranjang-badge {
+  position:absolute; top:-4px; right:-4px;
+  background:#fff; color:var(--orange);
+  width:20px; height:20px; border-radius:50%;
+  font-size:0.72rem; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  display:none;
+}
+.keranjang-badge.tampil { display:flex; }
+
+/* ── PANEL KERANJANG ── */
+.panel-keranjang {
+  position:fixed; right:0; top:0; bottom:0; z-index:300;
+  width:360px; max-width:100vw;
+  background:#fff; box-shadow:-8px 0 40px rgba(44,26,14,0.15);
+  display:flex; flex-direction:column;
+  transform:translateX(100%); transition:transform 0.35s ease;
+}
+.panel-keranjang.buka { transform:translateX(0); }
+.panel-header {
+  padding:1.4rem 1.5rem; border-bottom:1.5px solid var(--orange-pale);
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--warm-white);
+}
+.panel-header h3 { font-family:'Fraunces',serif; font-size:1.2rem; color:var(--brown); }
+.btn-tutup-panel {
+  background:none; border:none; font-size:1.4rem;
+  cursor:pointer; color:var(--text-muted);
+}
+.panel-body { flex:1; overflow-y:auto; padding:1.2rem 1.5rem; }
+.panel-kosong {
+  text-align:center; padding:3rem 1rem;
+  color:var(--text-muted); font-size:0.9rem;
+}
+.panel-kosong .ikon { font-size:3rem; margin-bottom:0.8rem; }
+.item-keranjang {
+  display:flex; gap:0.8rem; align-items:center;
+  padding:0.9rem 0; border-bottom:1px solid var(--orange-pale);
+}
+.item-ikon { font-size:1.8rem; flex-shrink:0; }
+.item-nama { font-weight:700; font-size:0.9rem; color:var(--brown); }
+.item-harga { font-size:0.82rem; color:var(--orange); font-weight:600; }
+.item-qty {
+  display:flex; align-items:center; gap:8px;
+  margin-left:auto; flex-shrink:0;
+}
+.btn-qty {
+  width:28px; height:28px; border-radius:50%;
+  border:1.5px solid var(--orange); background:none;
+  color:var(--orange); font-size:1rem; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background 0.2s;
+}
+.btn-qty:hover { background:var(--orange); color:#fff; }
+.qty-num { font-weight:700; font-size:0.95rem; color:var(--brown); min-width:20px; text-align:center; }
+.panel-footer {
+  padding:1.2rem 1.5rem; border-top:1.5px solid var(--orange-pale);
+  background:var(--warm-white);
+}
+.total-baris { display:flex; justify-content:space-between; margin-bottom:1rem; }
+.total-label { font-size:0.9rem; color:var(--text-muted); }
+.total-harga { font-family:'Fraunces',serif; font-size:1.3rem; font-weight:900; color:var(--orange); }
+.btn-order {
+  width:100%; padding:14px; border-radius:50px;
+  background:#25D366; color:#fff; border:none;
+  font-weight:700; font-size:1rem; cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  transition:background 0.2s, transform 0.2s;
+}
+.btn-order:hover { background:#1da851; transform:translateY(-2px); }
+.btn-order-wa {
+  width:100%; padding:10px; border-radius:50px;
+  background:var(--orange); color:#fff; border:none;
+  font-weight:700; font-size:0.9rem; cursor:pointer;
+  font-family:'DM Sans',sans-serif; margin-top:8px;
+  transition:background 0.2s;
+}
+.btn-order-wa:hover { background:#d0571a; }
+
+/* ── TOMBOL TAMBAH DI KARTU MENU ── */
+.btn-tambah {
+  width:100%; margin-top:0.8rem;
+  padding:8px; border-radius:50px;
+  background:var(--orange-pale); color:var(--orange);
+  border:none; font-weight:700; font-size:0.85rem;
+  cursor:pointer; font-family:'DM Sans',sans-serif;
+  transition:background 0.2s, color 0.2s;
+}
+.btn-tambah:hover { background:var(--orange); color:#fff; }
+
+/* ── OVERLAY KERANJANG ── */
+.overlay-keranjang {
+  display:none; position:fixed; inset:0; z-index:299;
+  background:rgba(44,26,14,0.4); backdrop-filter:blur(3px);
+}
+.overlay-keranjang.tampil { display:block; }
+
+/* ── NOTIF TAMBAH ── */
+@keyframes popIn {
+  0% { opacity:0; transform:scale(0.7) translateY(10px); }
+  60% { transform:scale(1.1); }
+  100% { opacity:1; transform:scale(1) translateY(0); }
+}
+.notif-tambah {
+  position:fixed; bottom:170px; right:24px; z-index:400;
+  background:var(--brown); color:#fff;
+  padding:10px 18px; border-radius:50px;
+  font-size:0.85rem; font-weight:600;
+  animation:popIn 0.3s ease both;
+  pointer-events:none;
+}
+/* ── MODAL ORDER LANGSUNG ── */
+.modal-order-bg {
+  display:none; position:fixed; inset:0; z-index:600;
+  background:rgba(44,26,14,0.6); backdrop-filter:blur(6px);
+  align-items:center; justify-content:center; padding:1rem;
+}
+.modal-order-bg.buka { display:flex; }
+.modal-order {
+  background:#fff; border-radius:24px; padding:2rem;
+  max-width:420px; width:100%; max-height:90vh; overflow-y:auto;
+  position:relative; animation:fadeUp 0.3s ease both;
+}
+.modal-order h3 { font-family:'Fraunces',serif; font-size:1.3rem; color:var(--brown); margin-bottom:1.4rem; }
+.order-step {
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:1.2rem; padding-bottom:1.2rem;
+  border-bottom:1px solid var(--orange-pale);
+}
+.order-step-num {
+  width:32px; height:32px; border-radius:50%;
+  background:var(--orange); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:0.9rem; flex-shrink:0;
+}
+.order-step-info { font-size:0.88rem; color:var(--text-muted); line-height:1.5; }
+.order-step-info strong { color:var(--brown); display:block; margin-bottom:2px; }
+.form-order { display:flex; flex-direction:column; gap:0.9rem; margin-bottom:1.2rem; }
+.form-order label { font-size:0.82rem; font-weight:600; color:var(--brown-mid); margin-bottom:3px; display:block; }
+.form-order input, .form-order textarea, .form-order select {
+  width:100%; border:1.5px solid #f1d7d7; border-radius:12px;
+  padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem;
+  color:var(--text); background:#fffaf4; outline:none; transition:border 0.2s;
+}
+.form-order input:focus, .form-order textarea:focus, .form-order select:focus { border-color:var(--orange); }
+.ringkasan-order {
+  background:var(--orange-pale); border-radius:12px;
+  padding:1rem; margin-bottom:1rem; font-size:0.85rem;
+}
+.ringkasan-order h4 { font-weight:700; color:var(--brown); margin-bottom:0.6rem; font-size:0.9rem; }
+.ringkasan-baris { display:flex; justify-content:space-between; color:var(--text-muted); margin-bottom:3px; }
+.ringkasan-total { display:flex; justify-content:space-between; font-weight:700; color:var(--orange); margin-top:8px; padding-top:8px; border-top:1px solid rgba(232,99,26,0.2); font-size:1rem; }
+.metode-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:1.2rem; }
+.metode-item {
+  border:2px solid #f1d7d7; border-radius:12px;
+  padding:0.8rem; text-align:center; cursor:pointer;
+  transition:all 0.2s; font-size:0.82rem; font-weight:600; color:var(--text-muted);
+}
+.metode-item:hover, .metode-item.aktif { border-color:var(--orange); background:var(--orange-pale); color:var(--orange); }
+.metode-ikon { font-size:1.5rem; margin-bottom:4px; }
+.btn-bayar-sekarang {
+  width:100%; padding:14px; border-radius:50px;
+  background:var(--orange); color:#fff; border:none;
+  font-weight:700; font-size:1rem; cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:background 0.2s, transform 0.2s;
+}
+.btn-bayar-sekarang:hover { background:#d0571a; transform:translateY(-2px); }
+.btn-order-langsung {
+  width:100%; padding:11px; border-radius:50px;
+  background:var(--orange-pale); color:var(--orange);
+  border:2px solid var(--orange); font-weight:700; font-size:0.9rem;
+  cursor:pointer; font-family:'DM Sans',sans-serif; margin-top:8px;
+  transition:all 0.2s;
+}
+.btn-order-langsung:hover { background:var(--orange); color:#fff; }
+.sukses-box {
+  text-align:center; padding:1.5rem 0;
+  display:none;
+}
+.sukses-box .sukses-ikon { font-size:4rem; margin-bottom:1rem; }
+.sukses-box h4 { font-family:'Fraunces',serif; font-size:1.3rem; color:var(--brown); margin-bottom:0.5rem; }
+.sukses-box p { font-size:0.88rem; color:var(--text-muted); line-height:1.6; }
+  </style>
+</head>
+<!-- Tombol Keranjang -->
+<button class="keranjang-btn" onclick="togglePanel()" title="Keranjang">
+  🛒
+  <span class="keranjang-badge" id="badge">0</span>
+</button>
+
+<!-- Overlay -->
+<div class="overlay-keranjang" id="overlay" onclick="togglePanel()"></div>
+
+<!-- Panel Keranjang -->
+<div class="panel-keranjang" id="panelKeranjang">
+  <div class="panel-header">
+    <h3>🛒 Keranjang Pesanan</h3>
+    <button class="btn-tutup-panel" onclick="togglePanel()">✕</button>
+  </div>
+  <div class="panel-body" id="panelBody">
+    <div class="panel-kosong" id="pesanKosong">
+      <div class="ikon">🍽️</div>
+      <p>Keranjangmu masih kosong.<br>Yuk pilih menu dulu!</p>
+    </div>
+    <div id="daftarItem"></div>
+  </div>
+ <div class="panel-footer">
+  <div class="total-baris">
+    <span class="total-label">Total Pesanan</span>
+    <span class="total-harga" id="totalHarga">Rp0</span>
+  </div>
+  <button class="btn-order" onclick="orderWA()">
+    💬 Pesan via WhatsApp
+  </button>
+  <button onclick="bukaOrder()" style="margin-top:8px;width:100%;padding:11px;border-radius:50px;background:var(--orange);color:#fff;border:none;font-weight:700;font-size:0.9rem;cursor:pointer;font-family:'DM Sans',sans-serif;">
+    ✅ Order & Bayar Langsung
+  </button>
+  <button class="btn-order-wa" onclick="resetKeranjang()">
+    🗑️ Kosongkan Keranjang
+  </button>
+</div>
+</div>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#beranda" class="nav-logo">Dapur<span>Kos</span></a>
+  <ul class="nav-links">
+    <li><a href="#beranda">Beranda</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#paket">Paket</a></li>
+    <li><a href="#cara-pesan">Cara Pesan</a></li>
+    <li><a href="#testimoni">Testimoni</a></li>
+    <li><a href="#lokasi">Lokasi</a></li>
+    <li><a href="#pembayaran">Pembayaran</a></li>
+    <li><a href="#pesan" class="nav-cta">Pesan Sekarang</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#beranda" onclick="closeMobile()">🏠 Beranda</a>
+  <a href="#menu" onclick="closeMobile()">🍽️ Menu</a>
+  <a href="#paket" onclick="closeMobile()">📦 Paket</a>
+  <a href="#cara-pesan" onclick="closeMobile()">📋 Cara Pesan</a>
+  <a href="#testimoni" onclick="closeMobile()">⭐ Testimoni</a>
+  <a href="#lokasi" onclick="closeMobile()">📍 Lokasi</a>
+  <a href="#pembayaran" onclick="closeMobile()">💳 Pembayaran</a>
+  <a href="#pesan" onclick="closeMobile()" style="color:var(--orange);font-weight:700;">Pesan Sekarang →</a>
+</div>
+
+<!-- HERO -->
+<section id="beranda">
+  <div class="hero-bg-blob"></div>
+  <div class="hero-text">
+    <div class="hero-badge">Catering Favorit Anak Kos Medan</div>
+    <h1>Makan Enak,<br><em>Dompet Aman</em>,<br>Langsung Diantar!</h1>
+    <p class="hero-sub">Masakan rumahan lezat, bergizi, harga kos-kosan. Diantar tepat waktu tiap hari — kamu tinggal makan!</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary">🍛 Lihat Menu</a>
+      <a href="#paket" class="btn-outline">📦 Cek Paket</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Pelanggan Aktif</div></div>
+      <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Rating Google</div></div>
+      <div class="stat"><div class="stat-num">2Thn</div><div class="stat-label">Pengalaman</div></div>
+    </div>
+  </div>
+  <div class="hero-img">
+    <div class="hero-food-card">
+      <img src="Images/Rantangan.jpg">
+      <div style="display:none;width:100%;height:200px;background:linear-gradient(135deg,#fde8d8,#fff9f0);border-radius:16px;align-items:center;justify-content:center;font-size:4rem;">🍱</div>
+      <div class="food-info">
+        <div class="food-name">Paket Makan Siang</div>
+        <div class="food-price">Rp12.000</div>
+      </div>
+      <div class="food-tags">
+        <span class="tag">Nasi Putih</span>
+        <span class="tag">Lauk 2x</span>
+        <span class="tag">Sayur</span>
+        <span class="tag">Gratis Antar</span>
+      </div>
+    </div>
+    <div class="floating-pill">⏰ Antar tepat jam 07.00,12:00 & 17.30</div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="menu-header reveal">
+    <div class="section-label">Menu Harian</div>
+    <h2 class="section-title">Pilihan Menu Lengkap & Lezat</h2>
+    <p class="section-sub">Dimasak segar tiap hari oleh tim dapur kami. Menu berganti-ganti supaya kamu tidak bosan!</p>
+  </div>
+  <div class="menu-filter reveal">
+    <button class="filter-btn active" onclick="filterMenu('semua', this)">Semua</button>
+    <button class="filter-btn" onclick="filterMenu('nasi', this)">Nasi</button>
+    <button class="filter-btn" onclick="filterMenu('lauk', this)">Lauk</button>
+    <button class="filter-btn" onclick="filterMenu('sayur', this)">Sayur</button>
+    <button class="filter-btn" onclick="filterMenu('minuman', this)">Minuman</button>
+    <button class="filter-btn" onclick="filterMenu('snack', this)">snack</button>
+  </div>
+  <div class="menu-grid" id="menuGrid">
+    <!-- Menu cards injected by JS -->
+  </div>
+</section>
+
+<!-- PAKET -->
+<section id="paket">
+  <div class="paket-header reveal">
+    <div class="section-label">Paket Berlangganan</div>
+    <h2 class="section-title">Hemat Lebih Banyak,<br>Makan Lebih Enak</h2>
+    <p class="section-sub">Pilih paket sesuai kebutuhan dan budgetmu. Bayar bulanan, lebih murah!</p>
+  </div>
+  <div class="paket-grid reveal">
+    <div class="paket-card">
+      <div class="paket-icon">🥄</div>
+      <div class="paket-name">Hemat</div>
+      <div class="paket-tagline">1x makan per hari</div>
+      <div class="paket-price">Rp200.000 <span>/bulan</span></div>
+      <ul class="paket-list">
+        <li>Makan siang atau malam</li>
+        <li>Nasi + 1 lauk + sayur</li>
+        <li>Gratis ongkir area kos</li>
+        <li>Bisa pilih menu harian</li>
+        <li>Estimasi antar tepat waktu</li>
+      </ul>
+      <a href="https://wa.me/6282279850652?text=Halo+kak,+saya+mau+pesan+Paket+Hemat" target="_blank" class="paket-btn">Pilih Paket Ini</a>
+    </div>
+    <div class="paket-card featured">
+      <div class="paket-ribbon">Terlaris</div>
+      <div class="paket-icon">🍱</div>
+      <div class="paket-name">Komplit</div>
+      <div class="paket-tagline">2x makan per hari</div>
+      <div class="paket-price">Rp350.000 <span>/bulan</span></div>
+      <ul class="paket-list">
+        <li>Makan siang & malam</li>
+        <li>Nasi + 2 lauk + sayur</li>
+        <li>Gratis ongkir area kos</li>
+        <li>Bonus snack 4x/bulan</li>
+        <li>Prioritas antar pertama</li>
+        <li>Bisa request menu khusus</li>
+      </ul>
+      <a href="https://wa.me/6282279850652?text=Halo+kak,+saya+mau+pesan+Paket+Komplit" target="_blank" class="paket-btn">Pilih Paket Ini</a>
+    </div>
+    <div class="paket-card">
+      <div class="paket-icon">👑</div>
+      <div class="paket-name">Premium</div>
+      <div class="paket-tagline">3x makan + ekstra</div>
+      <div class="paket-price">Rp480.000 <span>/bulan</span></div>
+      <ul class="paket-list">
+        <li>Sarapan, siang & malam</li>
+        <li>Nasi + 2 lauk + sayur + buah</li>
+        <li>Gratis ongkir se-kecamatan</li>
+        <li>Bonus snack 8x/bulan</li>
+        <li>Antar pertama & prioritas</li>
+        <li>Request menu bebas setiap hari</li>
+      </ul>
+      <a href="https://wa.me/6282279850652?text=Halo+kak,+saya+mau+pesan+Paket+Premium" target="_blank" class="paket-btn">Pilih Paket Ini</a>
+    </div>
+  </div>
+</section>
+
+<!-- CARA PESAN -->
+<section id="cara-pesan">
+  <div class="cara-layout">
+    <div>
+      <div class="section-label reveal">Cara Pesan</div>
+      <h2 class="section-title reveal">Pesan Mudah,<br>Hanya 3 Menit!</h2>
+      <p class="section-sub reveal">Tidak ribet, tidak perlu daftar dulu. Langsung chat dan makananmu segera disiapkan.</p>
+      <div class="cara-steps" style="margin-top:2rem;">
+        <div class="step-item reveal">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Pilih Menu atau Paket</h4>
+            <p>Lihat menu harian atau pilih paket berlangganan yang sesuai kebutuhan dan budgetmu.</p>
+          </div>
+        </div>
+        <div class="step-item reveal">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Chat via WhatsApp</h4>
+            <p>Kirim pesan ke nomor kami, sebutkan menu/paket yang dipilih, nama, dan alamat kosmu.</p>
+          </div>
+        </div>
+        <div class="step-item reveal">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Konfirmasi & Bayar</h4>
+            <p>Kami konfirmasi pesanan dan kirim nomor rekening / QRIS. Pembayaran mudah dan cepat.</p>
+          </div>
+        </div>
+        <div class="step-item reveal">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Makanan Diantar!</h4>
+            <p>Makanan segar langsung diantar ke kamar kos tepat waktu. Tinggal makan, selamat kenyang! 🎉</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cara-visual reveal">
+      <div>
+        <div class="chat-label">Kamu</div>
+        <div class="chat-bubble right">Halo kak! Mau pesan Paket Komplit dong 🙏</div>
+      </div>
+      <div>
+        <div class="chat-label">DapurKos</div>
+        <div class="chat-bubble left">Halo kak! Siap ya 😊 Boleh sebutkan nama dan alamat kosnya?</div>
+      </div>
+      <div>
+        <div class="chat-bubble right">Nama: Fernand, Kos Putra Hijau. Jl.Pendidikan No.12</div>
+      </div>
+      <div>
+        <div class="chat-bubble left">Oke kak Fernand! Paket Komplit: siang + malam mulai besok ya. Total Rp350.000/bulan. Bisa transfer ke BRI/QRIS 🍱</div>
+      </div>
+      <div>
+        <div class="chat-bubble right">Udah transfer kak! 😄</div>
+        <div class="chat-time" style="text-align:right; font-size:0.72rem; color:var(--text-muted);">✓✓ Terkirim</div>
+      </div>
+      <div>
+        <div class="chat-bubble left">Mantap! Pesanan sudah dikonfirmasi. Besok jam 11.30 makanannya udah di depan kamar ya kak! ✅</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONI -->
+<section id="testimoni">
+  <div class="testi-header reveal">
+    <div class="section-label">Testimoni</div>
+    <h2 class="section-title">Kata Mereka Tentang DapurKos</h2>
+    <p class="section-sub" style="margin:0 auto;">Ratusan anak kos sudah merasakan enaknya makan tanpa ribet. Ini kata mereka!</p>
+  </div>
+  <div class="testi-grid reveal">
+    <div class="testi-highlight">
+      <div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Udah 6 bulan langganan DapurKos, belum pernah kecewa! Masakannya enak banget, kayak masakan ibu sendiri. Harga pun sangat terjangkau buat kantong anak kos kayak aku."</p>
+      </div>
+      <div class="testi-author">
+        <div class="testi-avatar">👩</div>
+        <div>
+          <div class="testi-name" style="color:#fff;">Melisa Roasi</div>
+          <div class="testi-info">Mahasiswi POLMED – Paket Komplit</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Ngantar tepat waktu terus! Ga pernah telat. Porsinya juga gede banget, beda sama catering lain. Recommended banget buat temen-temen kos!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">👨</div>
+        <div>
+          <div class="testi-name">Matew</div>
+          <div class="testi-info">Mahasiswa UMA– Paket Hemat</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Menu-nya variatif banget, ga bosen makan tiap hari. Suka banget ada opsi request menu juga. Pelayanannya juga ramah dan responsif di WA!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">👩</div>
+        <div>
+          <div class="testi-name">Yosafat</div>
+          <div class="testi-info">Mahasiswi USU – Paket Premium</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★⭐</div>
+      <p class="testi-text">"Harga paling murah se-Medan tapi kualitas ga murahan. Udah aku rekomendasiin ke semua temen kos, banyak yang langsung daftar juga haha!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">👨</div>
+        <div>
+          <div class="testi-name">Joko</div>
+          <div class="testi-info">Freelancer – Paket Komplit</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Bayar pake QRIS gampang banget, ga perlu keluar kos. Makanannya segar, higienis, dan enak. Udah jadi andalan makan harian aku!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">👩</div>
+        <div>
+          <div class="testi-name">Zidan</div>
+          <div class="testi-info">Mahasiswi UNIMED – Paket Hemat</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Komentar -->
+  <div class="komentar-form-box reveal" style="max-width:700px; margin:2.5rem auto 0;">
+    <h3>💬 Tulis Komentarmu</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nama Kamu</label>
+        <input type="text" id="komNama" placeholder="Contoh: Rina Dewi" maxlength="40">
+      </div>
+      <div class="form-group">
+        <label>Paket yang Dipilih</label>
+        <select id="komPaket">
+          <option value="Paket Hemat">Paket Hemat</option>
+          <option value="Paket Komplit">Paket Komplit</option>
+          <option value="Paket Premium">Paket Premium</option>
+          <option value="Menu Satuan">Menu Satuan</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:1rem;">
+      <label>Rating</label>
+      <div class="star-select" id="starPilih">
+        <span data-val="1">★</span><span data-val="2">★</span>
+        <span data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Komentar</label>
+      <textarea id="komTeks" placeholder="Ceritakan pengalamanmu dengan DapurKos..." maxlength="300"></textarea>
+    </div>
+    <button class="btn-kirim" onclick="kirimKomentar()">Kirim Komentar 🚀</button>
+    <div class="komentar-list" id="komentarList"></div>
+  </div>
+</section>
+
+<!-- LOKASI -->
+<section id="lokasi">
+  <div class="lokasi-layout">
+    <div>
+      <div class="section-label reveal">Lokasi Kami</div>
+      <h2 class="section-title reveal">Temukan DapurKos<br>di Medan!</h2>
+      <p class="section-sub reveal">Kami melayani pengiriman di area Medan. Cek lokasi dapur kami di bawah ini.</p>
+      <div class="lokasi-info" style="margin-top:2rem;">
+        <div class="info-item reveal">
+          <div class="info-icon">📍</div>
+          <div>
+            <h4>Alamat Dapur</h4>
+            <p>Jl. Padang Bulan, Medan Baru, Kota Medan, Sumatera Utara 20153</p>
+          </div>
+        </div>
+        <div class="info-item reveal">
+          <div class="info-icon">🕐</div>
+          <div>
+            <h4>Jam Operasional</h4>
+            <p>Senin – Minggu: 07.00 – 21.00 WIB<br>Termasuk hari libur nasional</p>
+          </div>
+        </div>
+        <div class="info-item reveal">
+          <div class="info-icon">🛵</div>
+          <div>
+            <h4>Area Pengiriman</h4>
+            <p>Medan Baru, Medan Petisah, Medan Polonia, Medan Helvetia & sekitarnya (radius ±5 km)</p>
+          </div>
+        </div>
+        <div class="info-item reveal">
+          <div class="info-icon">📱</div>
+          <div>
+            <h4>Hubungi Kami</h4>
+            <p><a href="https://wa.me/6282279850652" target="_blank" style="color:var(--orange);font-weight:700;">0822-7985-0652 (WhatsApp)</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="peta-wrap reveal">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3982.0!2d98.6722!3d3.5896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30312f9c5ea6a1e7%3A0x5a50a8f065c083!2sPadang%20Bulan%2C%20Medan%20Baru%2C%20Kota%20Medan%2C%20Sumatera%20Utara!5e0!3m2!1sid!2sid!4v1717300000000!5m2!1sid!2sid"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- PEMBAYARAN -->
+<section id="pembayaran">
+  <div class="bayar-header reveal">
+    <div class="section-label">Metode Pembayaran</div>
+    <h2 class="section-title">Bayar Mudah &amp; Aman</h2>
+    <p class="section-sub" style="margin:0 auto;">Berbagai pilihan pembayaran tersedia. Semuanya mudah, cepat, dan terpercaya.</p>
+  </div>
+  <div class="bayar-grid reveal">
+    <div class="bayar-card" onclick="bukaModal('qris')">
+      <div class="bayar-ikon">📱</div>
+      <div class="bayar-nama">QRIS</div>
+      <div class="bayar-ket">Scan QR Code dari aplikasi dompet digital mana saja. Bayar langsung, konfirmasi otomatis.</div>
+      <button class="btn-bayar-detail">Lihat QR Code</button>
+    </div>
+    <div class="bayar-card" onclick="bukaModal('bri')">
+      <div class="bayar-ikon">🏦</div>
+      <div class="bayar-nama">Transfer BRI</div>
+      <div class="bayar-ket">Transfer ke rekening BRI kami. Setelah transfer, kirim bukti via WhatsApp untuk konfirmasi cepat.</div>
+      <button class="btn-bayar-detail">Lihat Rekening</button>
+    </div>
+    <div class="bayar-card" onclick="bukaModal('bca')">
+      <div class="bayar-ikon">🏧</div>
+      <div class="bayar-nama">Transfer BCA</div>
+      <div class="bayar-ket">Transfer ke rekening BCA kami. Konfirmasi via WhatsApp dengan foto bukti transfer.</div>
+      <button class="btn-bayar-detail">Lihat Rekening</button>
+    </div>
+    <div class="bayar-card" onclick="bukaModal('dana')">
+      <div class="bayar-ikon">💛</div>
+      <div class="bayar-nama">DANA / OVO / GoPay</div>
+      <div class="bayar-ket">Transfer dompet digital ke nomor kami. Cepat, tanpa biaya admin, langsung dikonfirmasi.</div>
+      <button class="btn-bayar-detail">Lihat Nomor</button>
+    </div>
+    <div class="bayar-card" onclick="bukaModal('cod')">
+      <div class="bayar-ikon">💵</div>
+      <div class="bayar-nama">Bayar di Tempat (COD)</div>
+      <div class="bayar-ket">Bayar tunai saat makanan tiba. Tersedia untuk area tertentu. Konfirmasi dulu via WhatsApp.</div>
+      <button class="btn-bayar-detail">Info Selengkapnya</button>
+    </div>
+    <div class="bayar-card" onclick="bukaModal('mandiri')">
+      <div class="bayar-ikon">🔵</div>
+      <div class="bayar-nama">Transfer Mandiri</div>
+      <div class="bayar-ket">Transfer ke rekening Mandiri kami. Kirim bukti pembayaran ke WhatsApp untuk konfirmasi pesanan.</div>
+      <button class="btn-bayar-detail">Lihat Rekening</button>
+    </div>
+  </div>
+  <div class="bayar-info-box reveal" style="max-width:600px; margin:2rem auto 0;">
+    <h4>💡 Cara Pembayaran</h4>
+    <p>Setelah memilih metode pembayaran, klik tombol di atas untuk melihat detail. Selesai bayar? Kirim bukti transfer ke <a href="https://wa.me/6282279850652" target="_blank" style="color:var(--yellow);font-weight:700;">WhatsApp kami</a> dan pesananmu langsung dikonfirmasi! ✅</p>
+  </div>
+</section>
+
+<!-- MODAL PEMBAYARAN -->
+<div class="modal-bg" id="modalBayar">
+  <div class="modal-box">
+    <button class="modal-tutup" onclick="tutupModal()">✕</button>
+    <div id="modalKonten"></div>
+  </div>
+</div>
+
+<!-- CTA PESAN -->
+<section id="pesan">
+  <div class="cta-box reveal">
+    <div class="section-label">Yuk Mulai!</div>
+    <h2 class="section-title">Siap Makan Enak Tanpa Ribet?</h2>
+    <p>Hubungi kami sekarang lewat WhatsApp. Pesanan pertama langsung diproses, antar hari ini juga untuk wilayah terdekat!</p>
+    <a href="https://wa.me/6282279850652?text=Halo+DapurKos!+Saya+mau+tanya-tanya+menu+dan+paket+ya+kak+😊" target="_blank" class="wa-btn">
+      <div class="wa-icon">💬</div>
+      Chat WhatsApp Sekarang
+    </a>
+    <div class="cta-note">⏰ Respon cepat, rata-rata balasan kurang dari 5 menit</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#beranda" class="nav-logo">Dapur<span>Kos</span></a>
+      <p>Catering rumahan lezat khusus anak kos Medan. Masak segar, antar tepat waktu, harga terjangkau sejak 2023.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Tautan Cepat</h5>
+      <ul>
+        <li><a href="#beranda">Beranda</a></li>
+        <li><a href="#menu">Menu Harian</a></li>
+        <li><a href="#paket">Paket Berlangganan</a></li>
+        <li><a href="#cara-pesan">Cara Pesan</a></li>
+        <li><a href="#testimoni">Testimoni</a></li>
+        <li><a href="#lokasi">Lokasi</a></li>
+        <li><a href="#pembayaran">Pembayaran</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Kontak Kami</h5>
+      <ul>
+        <li><a href="https://wa.me/6282279850652" target="_blank">📱 0812-3456-7890 (WA)</a></li>
+        <li><a href="#">📍 Padang Bulan, Medan</a></li>
+        <li><a href="#">📧 dapurkos@gmail.com</a></li>
+        <li><a href="#">🕐 Buka: 07.00 – 21.00 WIB</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 DapurKos. Dibuat dengan ❤️ untuk anak kos Medan.</span>
+    <span>Pesan via <a href="https://wa.me/6282279850652" target="_blank">WhatsApp</a></span>
+  </div>
+</footer>
+
+<!-- Floating WA Button -->
+<a href="https://wa.me/6282279850652?text=Halo+DapurKos!+Saya+mau+pesan+🍱" target="_blank" class="wa-float" title="Chat WhatsApp">💬</a>
+
+<script>
+  // ── Menu data ──
+  const menus = [
+    {
+      img: 'Images/Nasi-Ayam-Bakar.jpg',
+      name: 'Nasi Ayam Bakar',
+      desc: 'Ayam bakar madu, lalapan segar, sambal terasi khas rumahan.',
+      price: 'Rp12.000', badge: 'Tersedia', cat: 'nasi'
+    },
+    {
+      img: 'Images/Nasi-Rendang-Sapi2.jpg',
+      name: 'Nasi Rendang Sapi',
+      desc: 'Rendang daging sapi empuk, dimasak 3 jam, penuh rempah asli.',
+      price: 'Rp15.000', badge: 'Favorit', cat: 'nasi'
+    },
+    {
+      img: 'Images/Tempe-Orek.jpg',
+      name: 'Tempe Orek',
+      desc: 'Tempe orek manis gurih + nasi putih pulen, sederhana tapi mantap.',
+      price: 'Rp8.000', badge: 'Tersedia', cat: 'nasi'
+    },
+    {
+      img: 'Images/Nasi-Goreng.jpg',
+      name: 'Nasi Goreng',
+      desc: 'Nasi Goreng gurih + telur matasapi, sederhana tapi mantap.',
+      price: 'Rp10.000', badge: 'Tersedia', cat: 'nasi'
+    },
+    {
+      img: 'Images/Nasi-Oseng-Mercon.jpg',
+      name: 'Nasi Oseng Mercon',
+      desc: 'Oseng daging pedas dengan cabai melimpah untuk pecinta makanan pedas.',
+      price: 'Rp13.000', badge: 'Hot', cat: 'nasi'
+    },
+    {
+      img: 'Images/Ayam-Goreng-Kremes.jpg',
+      name: 'Ayam Goreng Kremes',
+      desc: 'Ayam goreng renyah dilumuri kremesan gurih, bikin nagih terus.',
+      price: 'Rp8.000', badge: 'Tersedia', cat: 'lauk'
+    },
+    {
+      img: 'Images/Ikan-Tongkol-Balado.jpg',
+      name: 'Ikan Tongkol Balado',
+      desc: 'Tongkol segar digoreng crispy dengan balado pedas menggugah selera.',
+      price: 'Rp7.000', badge: 'Pedas🌶️', cat: 'lauk'
+    },
+    {
+      img: 'Images/Ayam-Ricrica.webp',
+      name: 'Ayam Rica-Rica',
+      desc: 'Ayam rica pedas khas Manado dengan aroma rempah yang nikmat.',
+      price: 'Rp8.000', badge: 'Pedas🌶️', cat: 'lauk'
+    },
+    {
+      img: 'Images/Ikan-Lele-Goreng.jpg',
+      name: 'Ikan Lele Goreng',
+      desc: 'Lele goreng crispy dengan cita rasa gurih dan sambal pedas yang bikin ketagihan.',
+      price: 'Rp7.000', badge: 'Pedas🌶️', cat: 'lauk'
+    },
+    {
+      img: 'Images/Ikan-Nila-goreng.jpg',
+      name: 'Ikan Nila Goreng',
+      desc: 'Ikan nila goreng renyah yang disajikan dengan sambal pedas gurih, cocok untuk menambah selera makan.',
+      price: 'Rp7.000', badge: 'Pedas🌶️', cat: 'lauk'
+    },
+    {
+      img: 'Images/Telur-Dadar-Bumbu.jpg',
+      name: 'Telur Dadar Bumbu',
+      desc: 'Telur dadar tebal gurih dengan bumbu bawang dan cabai hijau.',
+      price: 'Rp5.000', badge: 'Tersedia', cat: 'lauk'
+    },
+    {
+      img: 'Images/Telur-Balado.jpg',
+      name: 'Telur Balado',
+      desc: 'Telur rebus pilihan yang disiram sambal balado pedas gurih, menghadirkan cita rasa khas rumahan yang menggugah selera.',
+      price: 'Rp5.000', badge: 'Favorit', cat: 'lauk'
+    },
+    {
+      img: 'Images/Tumis-Kangkung.jpg',
+      name: 'Tumis Kangkung',
+      desc: 'Kangkung segar ditumis dengan bawang putih dan cabai merah.',
+      price: 'Rp5.000', badge: 'Sehat', cat: 'sayur'
+    },
+    {
+      img: 'Images/Sayur-Lodeh.jpg',
+      name: 'Sayur Lodeh',
+      desc: 'Sayur campuran dalam kuah santan ringan yang hangat dan nikmat.',
+      price: 'Rp5.000', badge: 'Sehat', cat: 'sayur'
+    },
+    {
+      img: 'Images/Urap-Sayur.jpg',
+      name: 'Urap Sayur',
+      desc: 'Sayuran segar dengan campuran kelapa parut berbumbu khas Indonesia, gurih dan menyehatkan.',
+      price: 'Rp5.000', badge: 'Sehat', cat: 'sayur'
+    },
+     {
+      img: 'Images/Sayur-Sop.jpg',
+      name: 'Sayur Sop',
+      desc: 'Sayur sop hangat berisi wortel, kentang, kol, dan daun bawang dengan kuah gurih yang menyehatkan.',
+      price: 'Rp5.000', badge: 'Sehat', cat: 'sayur'
+    },
+     {
+      img: 'Images/Tumis-Buncis.jpg',
+      name: 'Sayur Buncis',
+      desc: 'Tumis buncis segar yang dimasak dengan bumbu pilihan, menghadirkan cita rasa gurih dan kaya nutrisi.',
+      price: 'Rp3.000', badge: 'Sehat', cat: 'sayur'
+    },
+    {
+      img: 'Images/Tumis-Toge.jpg',
+      name: 'Sayur Tumis Toge',
+      desc: 'Toge segar yang ditumis dengan bumbu rumahan, menghasilkan cita rasa gurih, ringan, dan menyehatkan.',
+      price: 'Rp3.000', badge: 'Sehat', cat: 'sayur'
+    },
+    {
+      img: 'Images/es-teh-manis.jpg',
+      name: 'Es Teh Manis',
+      desc: 'Teh melati segar dengan gula aren, manis alami menyegarkan.',
+      price: 'Rp3.000', badge: 'Segar', cat: 'minuman'
+    },
+    {
+      img: 'Images/jeruk-manis.jpg',
+      name: 'Es Jeruk Peras',
+      desc: 'Jeruk segar diperas langsung, kaya vitamin C, tanpa pengawet.',
+      price: 'Rp4.000', badge: 'Segar', cat: 'minuman'
+    },
+    {
+      img: 'Images/Lemon-Tea.jpg',
+      name: 'Lemon Tea',
+      desc: 'Teh lemon segar dengan perpaduan manis dan asam yang menyegarkan, cocok diminum saat cuaca panas.',
+      price: 'Rp5.000', badge: 'Segar', cat: 'minuman'
+    },
+    {
+      img: 'Images/Pisang-Goreng.jpg',
+      name: 'Pisang Goreng',
+      desc: 'Pisang goreng hangat dengan tekstur renyah dan lembut.',
+      price:  'Rp1.000',
+      badge: 'Renyah',
+      cat: 'snack'
+    },
+    {
+      img: 'Images/Risol-Mayo.jpg',
+      name:  'Risol Mayo',
+      desc:'Risol renyah berisi mayones, telur, dan smoked beef yang gurih serta lezat di setiap gigitan.',
+      price: 'Rp3.000',
+      badge: 'Favorit',
+      cat: 'snack'
+    },
+    {
+      img: 'Images/Pastel-isi-sayur.jpg',
+      name:  'Pastel Isi Sayur',
+      desc:'Pastel renyah dengan isian wortel, kentang, dan bihun yang gurih serta cocok dinikmati kapan saja.',
+      price: 'Rp2.000',
+      badge: 'Best Seller',
+      cat: 'snack'
+    },
+    {
+      img: 'Images/Sandwich-Mini.jpg',
+      name: 'Sandwich Mini',
+      desc:'Sandwich lembut berisi telur, selada segar, dan saus spesial yang praktis, lezat, dan mengenyangkan.',
+      price: 'Rp8.000',
+      badge: 'Best Seller & Sehat',
+      cat: 'snack'
+    },
+    {
+      img: 'Images/Puding-Coklat.jpg',
+      name: 'Puding Cokelat',
+      desc: 'Puding coklat lembut dan manis, cocok sebagai dessert setelah makan.',
+      price: 'Bonus',
+      badge: 'Bonus',
+      cat: 'snack'
+    },
+    {
+  img: 'Images/Buah-sehat.jpg',
+  name: 'Buah sehat',
+  desc: 'Aneka buah segar pilihan yang kaya vitamin dan nutrisi, cocok sebagai pelengkap menu sehat harian.',
+  price: 'Rp5.000',
+  badge: 'Segar',
+  cat: 'snack'
+},
+  ];
+  let currentFilter = 'semua';
+
+  // Ganti renderMenu yang lama dengan ini:
+function renderMenu(filter) {
+  const grid = document.getElementById('menuGrid');
+  const filtered = filter === 'semua' ? menus : menus.filter(m => m.cat === filter);
+  grid.innerHTML = filtered.map(m => `
+    <div class="menu-card reveal">
+      <div class="menu-img">
+        <img src="${m.img}" alt="${m.name}"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          crossorigin="anonymous"/>
+        <div class="menu-img-fallback" style="display:none">🍽️</div>
+      </div>
+      <div class="menu-body">
+        <h3>${m.name}</h3>
+        <p>${m.desc}</p>
+        <div class="menu-footer">
+          <span class="menu-price">${m.price}</span>
+          <span class="menu-badge">${m.badge}</span>
+        </div>
+        <button class="btn-tambah" onclick="tambahItem('${m.name}','${m.price}')">
+          + Tambah ke Pesanan
+        </button>
+      </div>
+    </div>
+  `).join('');
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+  function filterMenu(cat, btn) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderMenu(cat);
+  }
+
+  // ── Scroll animations ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Nav scroll effect ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ── Hamburger menu ──
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+  function closeMobile() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // ── Init menu ──
+  renderMenu('semua');
+
+  // ── Star Rating ──
+  let ratingDipilih = 5;
+  document.querySelectorAll('#starPilih span').forEach(s => {
+    s.addEventListener('mouseover', () => sorotBintang(+s.dataset.val));
+    s.addEventListener('mouseout', () => sorotBintang(ratingDipilih));
+    s.addEventListener('click', () => { ratingDipilih = +s.dataset.val; sorotBintang(ratingDipilih); });
+  });
+  function sorotBintang(val) {
+    document.querySelectorAll('#starPilih span').forEach((s,i) => s.classList.toggle('aktif', i < val));
+  }
+  sorotBintang(5);
+
+  // ── Kirim Komentar ──
+  function kirimKomentar() {
+    const nama = document.getElementById('komNama').value.trim();
+    const teks = document.getElementById('komTeks').value.trim();
+    const paket = document.getElementById('komPaket').value;
+    if (!nama || !teks) { alert('Nama dan komentar wajib diisi ya! 😊'); return; }
+    const bintang = '★'.repeat(ratingDipilih) + '☆'.repeat(5 - ratingDipilih);
+    const waktu = new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'});
+    const el = document.createElement('div');
+    el.className = 'komentar-item';
+    el.innerHTML = `
+      <div class="komentar-meta">
+        <span class="komentar-nama">👤 ${nama}</span>
+        <span class="komentar-bintang">${bintang}</span>
+      </div>
+      <div class="komentar-teks">"${teks}"</div>
+      <div class="komentar-waktu">📦 ${paket} · ${waktu}</div>`;
+    document.getElementById('komentarList').prepend(el);
+    document.getElementById('komNama').value = '';
+    document.getElementById('komTeks').value = '';
+    ratingDipilih = 5; sorotBintang(5);
+  }
+
+  // ── Modal Pembayaran ──
+  const dataModal = {
+    qris: `<h3>📱 Bayar via QRIS</h3>
+      <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:1rem;">Scan QR di bawah menggunakan GoPay, OVO, DANA, ShopeePay, atau m-banking apapun.</p>
+      <div class="qris-img">📲</div>
+      <p style="font-size:.8rem;color:var(--text-muted);text-align:center;">QR berlaku untuk semua pembayaran DapurKos</p>`,
+    bri: `<h3>🏦 Transfer BRI</h3>
+      <div class="rekening-item"><div><div class="rek-info">BRI a.n. DapurKos</div><div class="rek-nomor">1234-5678-9012-345</div></div><button class="btn-salin" onclick="salin('1234567890123456')">Salin</button></div>
+      <p style="font-size:.82rem;color:var(--text-muted);">Setelah transfer, kirim bukti ke <a href="https://wa.me/6282279850652" target="_blank" style="color:var(--orange)">WhatsApp kami</a> ya!</p>`,
+    bca: `<h3>🏧 Transfer BCA</h3>
+      <div class="rekening-item"><div><div class="rek-info">BCA a.n. DapurKos</div><div class="rek-nomor">8765-4321-000</div></div><button class="btn-salin" onclick="salin('8765432100')">Salin</button></div>
+      <p style="font-size:.82rem;color:var(--text-muted);">Setelah transfer, kirim bukti ke <a href="https://wa.me/6282279850652" target="_blank" style="color:var(--orange)">WhatsApp kami</a> ya!</p>`,
+    dana: `<h3>💛 DANA / OVO / GoPay</h3>
+      <div class="rekening-item"><div><div class="rek-info">Nomor Dompet Digital</div><div class="rek-nomor">0822-7985-0652</div></div><button class="btn-salin" onclick="salin('082279850652')">Salin</button></div>
+      <p style="font-size:.82rem;color:var(--text-muted);">Berlaku untuk DANA, OVO, GoPay, ShopeePay. Konfirmasi via WhatsApp setelah transfer.</p>`,
+    cod: `<h3>💵 Bayar di Tempat (COD)</h3>
+      <p style="font-size:.88rem;color:var(--text);line-height:1.6;margin-bottom:1rem;">COD tersedia untuk area <strong>Medan Baru, Medan Petisah, dan sekitarnya</strong>.</p>
+      <ul style="font-size:.85rem;color:var(--text-muted);line-height:1.8;padding-left:1.2rem;">
+        <li>Konfirmasi dulu via WhatsApp sebelum pesan</li>
+        <li>Siapkan uang pas saat kurir tiba</li>
+        <li>Tersedia untuk order min. Rp15.000</li>
+      </ul>
+      <a href="https://wa.me/6282279850652?text=Halo+kak+mau+pesan+COD" target="_blank" class="btn-kirim" style="display:inline-block;text-decoration:none;margin-top:1rem;">Chat Konfirmasi COD</a>`,
+    mandiri: `<h3>🔵 Transfer Mandiri</h3>
+      <div class="rekening-item"><div><div class="rek-info">Mandiri a.n. DapurKos</div><div class="rek-nomor">1230-0098-7654-321</div></div><button class="btn-salin" onclick="salin('123000987654321')">Salin</button></div>
+      <p style="font-size:.82rem;color:var(--text-muted);">Setelah transfer, kirim bukti ke <a href="https://wa.me/6282279850652" target="_blank" style="color:var(--orange)">WhatsApp kami</a> ya!</p>`,
+  };
+  function bukaModal(key) {
+    document.getElementById('modalKonten').innerHTML = dataModal[key];
+    document.getElementById('modalBayar').classList.add('buka');
+  }
+  function tutupModal() { document.getElementById('modalBayar').classList.remove('buka'); }
+  function salin(teks) {
+    navigator.clipboard.writeText(teks).then(() => alert('Nomor berhasil disalin! ✅'));
+  }
+  document.getElementById('modalBayar').addEventListener('click', e => { if(e.target === e.currentTarget) tutupModal(); });
+  // ── Keranjang ──
+let keranjang = [];
+
+function tambahItem(nama, hargaStr) {
+  if (hargaStr === 'Bonus') {
+    tampilNotif('🎁 ' + nama + ' otomatis ditambahkan!'); return;
+  }
+  const harga = parseInt(hargaStr.replace(/\D/g,''));
+  const ada = keranjang.find(i => i.nama === nama);
+  if (ada) ada.qty++;
+  else keranjang.push({ nama, harga, qty: 1 });
+  renderKeranjang();
+  tampilNotif('✅ ' + nama + ' ditambahkan!');
+}
+
+function renderKeranjang() {
+  const total = keranjang.reduce((s, i) => s + i.harga * i.qty, 0);
+  const jumlah = keranjang.reduce((s, i) => s + i.qty, 0);
+  document.getElementById('pesanKosong').style.display = keranjang.length ? 'none' : 'block';
+  document.getElementById('totalHarga').textContent = 'Rp' + total.toLocaleString('id-ID');
+  document.getElementById('badge').textContent = jumlah;
+  document.getElementById('badge').classList.toggle('tampil', jumlah > 0);
+  document.getElementById('daftarItem').innerHTML = keranjang.map((item, i) => `
+    <div class="item-keranjang">
+      <div class="item-ikon">🍽️</div>
+      <div>
+        <div class="item-nama">${item.nama}</div>
+        <div class="item-harga">Rp${(item.harga * item.qty).toLocaleString('id-ID')}</div>
+      </div>
+      <div class="item-qty">
+        <button class="btn-qty" onclick="ubahQty(${i},-1)">−</button>
+        <span class="qty-num">${item.qty}</span>
+        <button class="btn-qty" onclick="ubahQty(${i},1)">+</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function ubahQty(i, delta) {
+  keranjang[i].qty += delta;
+  if (keranjang[i].qty <= 0) keranjang.splice(i, 1);
+  renderKeranjang();
+}
+
+function togglePanel() {
+  document.getElementById('panelKeranjang').classList.toggle('buka');
+  document.getElementById('overlay').classList.toggle('tampil');
+}
+
+function resetKeranjang() {
+  keranjang = []; renderKeranjang();
+}
+
+function tampilNotif(pesan) {
+  const el = document.createElement('div');
+  el.className = 'notif-tambah';
+  el.textContent = pesan;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2000);
+}
+
+function orderWA() {
+  if (!keranjang.length) { alert('Keranjang masih kosong!'); return; }
+  const total = keranjang.reduce((s,i) => s + i.harga * i.qty, 0);
+  const isi = keranjang.map(i => `• ${i.nama} x${i.qty} = Rp${(i.harga*i.qty).toLocaleString('id-ID')}`).join('%0A');
+  const total_str = 'Total%3A Rp' + total.toLocaleString('id-ID');
+  const pesan = `Halo+DapurKos!+Saya+mau+pesan+:%0A${isi}%0A${total_str}`;
+  window.open('https://wa.me/6282279850652?text=' + pesan, '_blank');
+}
+// ── Order Langsung ──
+let metodeBayar = 'QRIS';
+
+function bukaOrder() {
+  if (!keranjang.length) { alert('Keranjang masih kosong!'); return; }
+  const total = keranjang.reduce((s,i) => s + i.harga * i.qty, 0);
+  document.getElementById('ringkasanIsi').innerHTML =
+    keranjang.map(i => `<div class="ringkasan-baris"><span>${i.nama} x${i.qty}</span><span>Rp${(i.harga*i.qty).toLocaleString('id-ID')}</span></div>`).join('');
+  document.getElementById('ringkasanTotal').textContent = 'Rp' + total.toLocaleString('id-ID');
+  document.getElementById('formOrder').style.display = 'block';
+  document.getElementById('suksesBox').style.display = 'none';
+  document.getElementById('modalOrder').classList.add('buka');
+  document.getElementById('panelKeranjang').classList.remove('buka');
+  document.getElementById('overlay').classList.remove('tampil');
+}
+
+function tutupOrder() {
+  document.getElementById('modalOrder').classList.remove('buka');
+}
+
+function pilihMetode(el, metode) {
+  document.querySelectorAll('.metode-item').forEach(m => m.classList.remove('aktif'));
+  el.classList.add('aktif');
+  metodeBayar = metode;
+}
+
+function konfirmasiOrder() {
+  const nama = document.getElementById('orderNama').value.trim();
+  const hp = document.getElementById('orderHP').value.trim();
+  const alamat = document.getElementById('orderAlamat').value.trim();
+  const waktu = document.getElementById('orderWaktu').value;
+  const catatan = document.getElementById('orderCatatan').value.trim();
+  if (!nama || !hp || !alamat) { alert('Nama, nomor HP, dan alamat wajib diisi ya!'); return; }
+  const total = keranjang.reduce((s,i) => s + i.harga * i.qty, 0);
+  const noOrder = 'DK-' + Date.now().toString().slice(-6);
+  document.getElementById('suksesBox').style.display = 'block';
+  document.getElementById('formOrder').style.display = 'none';
+  document.getElementById('suksesPesan').innerHTML =
+    `No. Order: <strong>${noOrder}</strong><br>
+     Nama: <strong>${nama}</strong><br>
+     Pengiriman: <strong>${waktu}</strong><br>
+     Pembayaran: <strong>${metodeBayar}</strong><br>
+     Total: <strong style="color:var(--orange)">Rp${total.toLocaleString('id-ID')}</strong><br><br>
+     Tim DapurKos akan segera menghubungi <strong>${hp}</strong> untuk konfirmasi pembayaran. Terima kasih! 🍱`;
+}
+
+function selesaiOrder() {
+  keranjang = [];
+  renderKeranjang();
+  tutupOrder();
+}
+</script>
+<!-- Modal Order Langsung -->
+<div class="modal-order-bg" id="modalOrder">
+  <div class="modal-order">
+    <button class="modal-tutup" onclick="tutupOrder()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text-muted);">✕</button>
+
+    <!-- Form Order -->
+    <div id="formOrder">
+      <h3>🛒 Order Langsung</h3>
+
+      <!-- Ringkasan -->
+      <div class="ringkasan-order">
+        <h4>Ringkasan Pesanan</h4>
+        <div id="ringkasanIsi"></div>
+        <div class="ringkasan-total">
+          <span>Total</span>
+          <span id="ringkasanTotal">Rp0</span>
+        </div>
+      </div>
+
+      <!-- Form Data -->
+      <div class="form-order">
+        <div>
+          <label>Nama Lengkap</label>
+          <input type="text" id="orderNama" placeholder="Contoh: Rina Dewi">
+        </div>
+        <div>
+          <label>Nomor HP (aktif)</label>
+          <input type="tel" id="orderHP" placeholder="Contoh: 08123456789">
+        </div>
+        <div>
+          <label>Alamat Pengiriman</label>
+          <textarea id="orderAlamat" rows="2" placeholder="Nama kos, jalan, nomor kamar..."></textarea>
+        </div>
+        <div>
+          <label>Waktu Pengiriman</label>
+          <select id="orderWaktu">
+            <option value="Secepatnya">⚡ Secepatnya</option>
+            <option value="07.00 WIB">🌅 07.00 WIB (Sarapan)</option>
+            <option value="12.00 WIB">☀️ 12.00 WIB (Makan Siang)</option>
+            <option value="17.30 WIB">🌆 17.30 WIB (Makan Malam)</option>
+          </select>
+        </div>
+        <div>
+          <label>Catatan (opsional)</label>
+          <input type="text" id="orderCatatan" placeholder="Contoh: tidak pakai pedas, dll">
+        </div>
+      </div>
+
+      <!-- Metode Bayar -->
+      <label style="font-size:0.82rem;font-weight:600;color:var(--brown-mid);margin-bottom:8px;display:block;">Metode Pembayaran</label>
+      <div class="metode-grid">
+        <div class="metode-item aktif" onclick="pilihMetode(this,'QRIS')">
+          <div class="metode-ikon">📱</div>QRIS
+        </div>
+        <div class="metode-item" onclick="pilihMetode(this,'Transfer BRI')">
+          <div class="metode-ikon">🏦</div>Transfer BRI
+        </div>
+        <div class="metode-item" onclick="pilihMetode(this,'DANA/OVO/GoPay')">
+          <div class="metode-ikon">💛</div>DANA/OVO
+        </div>
+        <div class="metode-item" onclick="pilihMetode(this,'COD (Bayar di Tempat)')">
+          <div class="metode-ikon">💵</div>COD
+        </div>
+      </div>
+
+      <button class="btn-bayar-sekarang" onclick="konfirmasiOrder()">✅ Konfirmasi & Bayar</button>
+      <button class="btn-order-langsung" onclick="tutupOrder()">← Kembali ke Keranjang</button>
+    </div>
+
+    <!-- Sukses -->
+    <div class="sukses-box" id="suksesBox">
+      <div class="sukses-ikon">🎉</div>
+      <h4>Pesanan Dikonfirmasi!</h4>
+      <p id="suksesPesan"></p>
+      <button class="btn-bayar-sekarang" style="margin-top:1.5rem;" onclick="selesaiOrder()">Selesai</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
